@@ -25,21 +25,34 @@ function Modal(props) {
     document.querySelector(".modal-increment-input input").value = "";
   };
 
-  //Funcion para filtrar el input del timer que sea solo numeros y teng en el medio :
+  // Función para filtrar el input del timer que sea solo números y tenga ':' en el medio
   const filterTimer = (e) => {
     const timerInput = document.querySelector(".modal-timer-input input");
+    const inputValue = timerInput.value;
 
+    // Si el evento es 'input' o 'paste', verifica el contenido actual del input
+    if (e.type === "input" || e.type === "paste") {
+      if (!/^(\d{0,2}:\d{0,2}|\d{0,2})$/.test(inputValue)) {
+        timerInput.value = inputValue.replace(/[^0-9:]/g, "");
+      }
+      return;
+    }
+
+    // Si el evento es una pulsación de tecla
     if (!/[0-9]/.test(Number(e.key)) || e.key === " ") {
       e.preventDefault();
       return false;
     }
 
-    let value = timerInput.value;
-    if (timerInput.value.length === 2) value = timerInput.value + ":";
+    let value = inputValue;
+    if (inputValue.length === 2) {
+      value = inputValue + ":";
+    }
+
     timerInput.value = value;
   };
 
-  //Funcion para manejar el input del timer
+  // Función para manejar el input del timer
   const handleInputChange = (e) => {
     let value = e.target.value;
 
@@ -49,24 +62,33 @@ function Modal(props) {
     }
 
     let min = value.slice(0, 2);
-    let sec = value.slice(3, 6);
+    let sec = value.slice(3, 5);
     let total = Number(min) * 60 + Number(sec);
 
     setSeconds(total);
     setIsDisabled(false);
   };
 
-  //Funcion para filtrar el input del incremento que sea solo numeros
+  // Función para filtrar el input del incremento que sea solo números
   const filterIncrement = (e) => {
     const incrementInput = document.querySelector(
       ".modal-increment-input input"
     );
+    const inputValue = incrementInput.value;
 
+    // Si el evento es 'input' o 'paste', verifica el contenido actual del input
+    if (e.type === "input" || e.type === "paste") {
+      incrementInput.value = inputValue.replace(/\D/g, "");
+      return;
+    }
+
+    // Si el evento es una pulsación de tecla
     if (!/[0-9]/.test(Number(e.key)) || e.key === " ") {
       e.preventDefault();
       return false;
     }
-    let value = incrementInput.value;
+
+    let value = inputValue;
     incrementInput.value = value;
   };
 
