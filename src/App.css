@@ -1,0 +1,16 @@
+/* .App {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+} */
+
+#main {
+  position: relative;
+  transition: margin-left 0.5s;
+  width: 100%;
+  z-index: 0;
+  justify-content: center;
+  align-items: center;
+}
