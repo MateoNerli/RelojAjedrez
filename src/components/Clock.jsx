@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Controls from "./Controls";
 import "./Clock.css";
 import Alert from "./Alert";
+import AlertaFin from "./AlertaFin";
 
 function Clock(props) {
   //Estado de como va a empezar el juego
@@ -17,6 +18,7 @@ function Clock(props) {
   });
   const [clocksDisabled, setClocksDisabled] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+
   //Para saber los movimentos de los jugadores
   const [moves, setMoves] = useState({
     Jug1: 0,
@@ -99,12 +101,12 @@ function Clock(props) {
     if (!state.paused) {
       clearInterval(runJug2Ref.current);
       clearInterval(runJug1Ref.current);
-      setClocksDisabled(true); // Deshabilita los relojes al pausar el juego
+      setClocksDisabled(true);
     } else {
       state.toPlay === "Jug1"
         ? (runJug2Ref.current = setInterval(tickJug1Clock, 1000))
         : (runJug1Ref.current = setInterval(tickJug2Clock, 1000));
-      setClocksDisabled(false); // Habilita los relojes al reanudar el juego
+      setClocksDisabled(false);
     }
 
     setState((prevState) => ({
@@ -176,8 +178,14 @@ function Clock(props) {
     modal.classList.add("modal_open");
     modalOverlay.classList.add("modal_activa");
   };
+
   const handleAlertClose = () => {
     setShowAlert(false);
+  };
+
+  const resetGame = () => {
+    resetTimer();
+    setShowAlert(false); // Close the alert
   };
 
   useEffect(() => {
@@ -185,6 +193,7 @@ function Clock(props) {
       setShowAlert(true);
     }
   }, [state.gameStarted]);
+
   return (
     <div key={props.timeControl}>
       <div className="clock">
@@ -203,6 +212,7 @@ function Clock(props) {
               {formatTime(state.Jug2)}
             </h1>
             <p className="">Movimientos: {moves.Jug1}</p>
+            <p>Jug1</p>
           </div>
         </div>
         <Controls
@@ -226,6 +236,7 @@ function Clock(props) {
               {formatTime(state.Jug1)}
             </h1>
             <p className="">Movimientos: {moves.Jug2}</p>
+            <p>Jug2</p>
           </div>
         </div>
       </div>
@@ -234,6 +245,13 @@ function Clock(props) {
           message="¡El juego ha comenzado!"
           duration={1000}
           onClose={handleAlertClose}
+        />
+      )}
+
+      {state.gameFinished && (
+        <AlertaFin
+          winner={state.Jug1 === 0 ? "Jug1" : "Jug2"}
+          onRestartGame={resetGame}
         />
       )}
     </div>
