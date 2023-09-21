@@ -1,15 +1,25 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const Alert = ({ message, duration, onClose }) => {
   const [show, setShow] = useState(true);
+  const startTime = performance.now();
+
+  const closeAlert = () => {
+    setShow(false);
+    onClose();
+  };
+
+  const animateAlert = (timestamp) => {
+    const elapsed = timestamp - startTime;
+    if (elapsed < duration) {
+      requestAnimationFrame(animateAlert);
+    } else {
+      closeAlert();
+    }
+  };
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setShow(false);
-      onClose();
-    }, duration);
-
-    return () => clearTimeout(timeout);
+    requestAnimationFrame(animateAlert);
   }, [duration, onClose]);
 
   return show ? (
@@ -20,3 +30,4 @@ const Alert = ({ message, duration, onClose }) => {
 };
 
 export default Alert;
+//quiero hacer una alerte en un componente,  que al jugadore cuando le queden 10 segundos para que el tiempo llegue a 0 se le muestre
