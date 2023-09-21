@@ -5,3 +5,13 @@
 .cont {
   height: 10vh;
 }
+
+/* .jug.active {
+  pointer-events: auto; 
+  background-color: #006DF2; 
+} */
+
+.jug.inactive {
+  pointer-events: none; /* Deshabilita eventos de puntero cuando no es el turno del jugador */
+  background-color: #797979; /* Cambia el color de fondo cuando no es el turno del jugador */
+}

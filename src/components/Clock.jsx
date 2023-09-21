@@ -18,6 +18,7 @@ function Clock(props) {
   //Para saber los movimentos de los jugadores
   const [moves, setMoves] = useState({
     Jug1: 0,
+
     Jug2: 0,
   });
 
@@ -176,7 +177,11 @@ function Clock(props) {
     <div key={props.timeControl}>
       <div className="clock ">
         <div
-          className="w-screen jug flex justify-center items-center"
+          className={`w-screen jug flex justify-center items-center ${
+            state.toPlay === "Jug1"
+              ? "pointer-events-auto bg-blue-400"
+              : "pointer-events-none bg-gray-100"
+          }`}
           onClick={passTurn}
           style={
             state.toPlay === "Jug1"
@@ -198,7 +203,11 @@ function Clock(props) {
           onResetTimer={resetTimer}
         />
         <div
-          className="w-screen jug flex justify-center items-center"
+          className={`w-screen jug flex justify-center items-center ${
+            state.toPlay === "Jug2"
+              ? "pointer-events-auto bg-blue-400"
+              : "pointer-events-none bg-gray-100"
+          }`}
           onClick={passTurn}
           style={
             state.toPlay === "Jug2"
