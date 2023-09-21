@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Controls from "./Controls";
 import "./Clock.css";
+import Alert from "./Alert";
 
 function Clock(props) {
   //Estado de como va a empezar el juego
@@ -14,7 +15,8 @@ function Clock(props) {
     toPlay: "Jug1",
     turn: 1,
   });
-
+  const [clocksDisabled, setClocksDisabled] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   //Para saber los movimentos de los jugadores
   const [moves, setMoves] = useState({
     Jug1: 0,
@@ -97,10 +99,12 @@ function Clock(props) {
     if (!state.paused) {
       clearInterval(runJug2Ref.current);
       clearInterval(runJug1Ref.current);
+      setClocksDisabled(true); // Deshabilita los relojes al pausar el juego
     } else {
       state.toPlay === "Jug1"
         ? (runJug2Ref.current = setInterval(tickJug1Clock, 1000))
         : (runJug1Ref.current = setInterval(tickJug2Clock, 1000));
+      setClocksDisabled(false); // Habilita los relojes al reanudar el juego
     }
 
     setState((prevState) => ({
@@ -172,22 +176,27 @@ function Clock(props) {
     modal.classList.add("modal_open");
     modalOverlay.classList.add("modal_activa");
   };
+  const handleAlertClose = () => {
+    setShowAlert(false);
+  };
 
+  useEffect(() => {
+    if (state.gameStarted) {
+      setShowAlert(true);
+    }
+  }, [state.gameStarted]);
   return (
     <div key={props.timeControl}>
-      <div className="clock ">
+      <div className="clock">
         <div
           className={`w-screen jug flex justify-center items-center ${
             state.toPlay === "Jug1"
-              ? "pointer-events-auto bg-blue-400"
-              : "pointer-events-none bg-gray-100"
+              ? clocksDisabled
+                ? "pointer-events-none bg-gray-300"
+                : "pointer-events-auto bg-blue-600"
+              : "pointer-events-none bg-gray-300"
           }`}
           onClick={passTurn}
-          style={
-            state.toPlay === "Jug1"
-              ? { backgroundColor: "#006DF2" }
-              : { background: "#797979" }
-          }
         >
           <div className="">
             <h1 className="font-serif flex justify-center items-center text-3xl font-semibold tabular-nums  ">
@@ -205,15 +214,12 @@ function Clock(props) {
         <div
           className={`w-screen jug flex justify-center items-center ${
             state.toPlay === "Jug2"
-              ? "pointer-events-auto bg-blue-400"
-              : "pointer-events-none bg-gray-100"
+              ? clocksDisabled
+                ? "pointer-events-none bg-gray-300"
+                : "pointer-events-auto bg-blue-600"
+              : "pointer-events-none bg-gray-300"
           }`}
           onClick={passTurn}
-          style={
-            state.toPlay === "Jug2"
-              ? { backgroundColor: "#006DF2" }
-              : { background: "#797979" }
-          }
         >
           <div className="">
             <h1 className="font-serif flex justify-center items-center text-3xl font-semibold tabular-nums  ">
@@ -223,6 +229,13 @@ function Clock(props) {
           </div>
         </div>
       </div>
+      {showAlert && (
+        <Alert
+          message="¡El juego ha comenzado!"
+          duration={1000}
+          onClose={handleAlertClose}
+        />
+      )}
     </div>
   );
 }

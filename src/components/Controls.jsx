@@ -12,17 +12,21 @@ function Controls({ onOpenModal, onPauseResume, onResetTimer }) {
     <div className="controles flex justify-center items-center">
       <div className="btn  m-2 border border-black center rounded-lg justify-center items-center">
         <button onClick={onOpenModal}>
-          <FaCog className="m-2" />
+          <FaCog className="m-2 inline" />
         </button>
       </div>
       <div className="btn m-2 border border-black rounded-lg">
         <button onClick={handlePauseResumeClick}>
-          {isPaused ? <FaPlay className="m-2" /> : <FaPause className="m-2" />}
+          {isPaused ? (
+            <FaPlay className="m-2 inline" />
+          ) : (
+            <FaPause className="m-2 inline" />
+          )}
         </button>
       </div>
       <div className="btn m-2 border border-black rounded-lg">
         <button onClick={onResetTimer}>
-          <FaRedo className="m-2" />
+          <FaRedo className="m-2 inline" />
         </button>
       </div>
     </div>
