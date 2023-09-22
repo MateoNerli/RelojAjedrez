@@ -39,18 +39,20 @@ function Modal(props) {
   };
 
   // Función para filtrar el input del timer que sea solo números y tenga ':' en el medio
-  const filterTimer = (e) => {
-    const timerInput = document.querySelector(".modal-timer-input input");
+  const timerInput = document.querySelector(".modal-timer-input input");
 
-    if (!/[0-9]/.test(Number(e.key)) || e.key === " ") {
-      e.preventDefault();
-      return false;
+  timerInput.addEventListener("input", (e) => {
+    let value = e.target.value;
+
+    if (!/^\d{0,2}(:\d{0,2})?$/.test(value)) {
+      e.target.value = value.replace(/[^0-9:]/g, "");
+      return;
     }
 
-    let value = timerInput.value;
-    if (timerInput.value.length === 2) value = timerInput.value + ":";
-    timerInput.value = value;
-  };
+    if (value.length === 2 && !value.includes(":")) {
+      e.target.value = value + ":";
+    }
+  });
 
   //Funcion para manejar el input del timer
   const handleInputChange = (e) => {
@@ -70,18 +72,16 @@ function Modal(props) {
   };
 
   //Funcion para filtrar el input del incremento que sea solo numeros
-  const filterIncrement = (e) => {
-    const incrementInput = document.querySelector(
-      ".modal-increment-input input"
-    );
+  const incrementInput = document.querySelector(".modal-increment-input input");
 
-    if (!/[0-9]/.test(Number(e.key)) || e.key === " ") {
-      e.preventDefault();
-      return false;
+  incrementInput.addEventListener("input", (e) => {
+    let value = e.target.value;
+
+    if (!/^[0-9]*$/.test(value)) {
+      e.target.value = value.replace(/[^0-9]/g, "");
+      return;
     }
-    let value = incrementInput.value;
-    incrementInput.value = value;
-  };
+  });
 
   console.log(player1Name, player2Name);
 
