@@ -16,6 +16,7 @@ function Clock(props) {
     toPlay: "Jug1",
     turn: 1,
   });
+  const { player1Name, player2Name } = props;
   const [clocksDisabled, setClocksDisabled] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
@@ -194,25 +195,31 @@ function Clock(props) {
     }
   }, [state.gameStarted]);
 
+  //quiero mostrar los nombres de los jugadores
+  useEffect(() => {}, [props.player1Name, props.player2Name]);
+
+  console.log(props.player1Name);
   return (
     <div key={props.timeControl}>
       <div className="clock">
-        <div
-          className={`w-screen jug flex justify-center items-center ${
-            state.toPlay === "Jug1"
-              ? clocksDisabled
-                ? "pointer-events-none bg-gray-300"
-                : "pointer-events-auto bg-blue-600"
-              : "pointer-events-none bg-gray-300"
-          }`}
-          onClick={passTurn}
-        >
-          <div className="">
-            <h1 className="font-serif flex justify-center items-center text-3xl font-semibold tabular-nums  ">
-              {formatTime(state.Jug2)}
-            </h1>
-            <p className="">Movimientos: {moves.Jug1}</p>
-            <p>Jug1</p>
+        <div className="clock-container">
+          <div
+            className={`jug flex justify-center items-center ${
+              state.toPlay === "Jug1"
+                ? clocksDisabled
+                  ? "pointer-events-none bg-gray-300"
+                  : "pointer-events-auto bg-blue-600"
+                : "pointer-events-none bg-gray-300"
+            }`}
+            onClick={passTurn}
+          >
+            <div className="flex flex-col justify-center items-center full-height">
+              <p className="transform rotate-180">{player1Name}</p>
+              <p className="transform rotate-180">Movimientos: {moves.Jug1}</p>
+              <h1 className="font-serif text-3xl font-semibold tabular-nums transform rotate-180">
+                {formatTime(state.Jug2)}
+              </h1>
+            </div>
           </div>
         </div>
         <Controls
@@ -221,25 +228,28 @@ function Clock(props) {
           onPauseResume={togglePause}
           onResetTimer={resetTimer}
         />
-        <div
-          className={`w-screen jug flex justify-center items-center ${
-            state.toPlay === "Jug2"
-              ? clocksDisabled
-                ? "pointer-events-none bg-gray-300"
-                : "pointer-events-auto bg-blue-600"
-              : "pointer-events-none bg-gray-300"
-          }`}
-          onClick={passTurn}
-        >
-          <div className="">
-            <h1 className="font-serif flex justify-center items-center text-3xl font-semibold tabular-nums  ">
-              {formatTime(state.Jug1)}
-            </h1>
-            <p className="">Movimientos: {moves.Jug2}</p>
-            <p>Jug2</p>
+        <div className="clock-container">
+          <div
+            className={`jug flex justify-center items-center ${
+              state.toPlay === "Jug2"
+                ? clocksDisabled
+                  ? "pointer-events-none bg-gray-300"
+                  : "pointer-events-auto bg-blue-600"
+                : "pointer-events-none bg-gray-300"
+            }`}
+            onClick={passTurn}
+          >
+            <div className="flex flex-col justify-center items-center full-height">
+              <h1 className="font-serif flex justify-center items-center text-3xl font-semibold tabular-nums">
+                {formatTime(state.Jug1)}
+              </h1>
+              <p className="">Movimientos: {moves.Jug2}</p>
+              <p className="">{player2Name}</p>
+            </div>
           </div>
         </div>
       </div>
+
       {showAlert && (
         <Alert
           message="¡El juego ha comenzado!"

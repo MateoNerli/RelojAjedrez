@@ -7,6 +7,8 @@ function App() {
   const [timeControl, setTimeControl] = useState(300);
   const [increment, setIncrement] = useState(3);
   const [isModalOpen, setIsModalOpen] = useState(true);
+  const [player1Name, setPlayer1Name] = useState("Jugador 1");
+  const [player2Name, setPlayer2Name] = useState("Jugador 2");
 
   //Abrir y cerrar la modal
   useEffect(() => {
@@ -35,16 +37,31 @@ function App() {
     setIncrement(Number(incrementModal));
   };
 
+  const ModificarNombre = (nombre1, nombre2) => {
+    setPlayer1Name(nombre1);
+    setPlayer2Name(nombre2);
+  };
+  console.log("player1Name:", player1Name);
+  console.log("player2Name:", player2Name);
+
   return (
     <div className="App">
       <Modal
         modalState={modalState}
         modificarTimers={modificarTimers}
         isOpen={isModalOpen}
+        ModificarNombre={ModificarNombre}
+        player1Name={player1Name}
+        player2Name={player2Name}
       />
 
       <div id="main">
-        <Clock timeControl={timeControl} increment={increment} />
+        <Clock
+          timeControl={timeControl}
+          increment={increment}
+          player1Name={player1Name}
+          player2Name={player2Name}
+        />
       </div>
     </div>
   );

@@ -11,6 +11,7 @@
 }
 
 .modal {
+  height: 87%;
   opacity: 0;
   z-index: 5;
   border-radius: 10px;
