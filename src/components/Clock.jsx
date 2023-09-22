@@ -260,7 +260,7 @@ function Clock(props) {
 
       {state.gameFinished && (
         <AlertaFin
-          winner={state.Jug1 === 0 ? "Jug1" : "Jug2"}
+          winner={state.Jug1 === 0 ? player2Name : player1Name}
           onRestartGame={resetGame}
         />
       )}

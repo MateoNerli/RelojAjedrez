@@ -7,8 +7,11 @@ const AlertaFin = ({ winner, onRestartGame }) => {
         <div className="grid items-center justify-center w-full grid-cols-1 text-left">
           <div>
             <h2 className="text-lg font-medium tracking-tighter text-white lg:text-3xl">
-              {winner === "Jug1" ? "¡Perdiste Jug1!" : "¡Perdiste Jug2!"}
+              ¡Perdió {winner}!
             </h2>
+            <p className=" text-white lg:text-3xl p-4">
+              Te quedaste sin tiempo
+            </p>
           </div>
         </div>
       </div>
